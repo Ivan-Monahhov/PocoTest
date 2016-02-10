@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN'
+  'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
+
+<mapper namespace='application.mappers.AccountMapper'>
+
+  <select id='getById' parameterType='long' resultType='Account'>
+     SELECT 
+      id as id, 
+      name as name,
+      balance
+     FROM ACCOUNT 
+     WHERE ID = #{id}
+  </select>
+  <!-- Instead of referencing Fully Qualified Class Names we can register Aliases in mybatis-config.xml and use Alias names. -->
+   <resultMap type='Account' id='AccountResult'>
+    <id property='id' column='id'/>
+    <result property='name' column='name'/>
+    <result property='balance' column='balance'/>
+   </resultMap>
+
+  <select id='getByName' parameterType='String' resultMap='AccountResult'>
+   SELECT * FROM ACCOUNT WHERE NAME =#{name}
+  </select>
+
+  <insert id='insertAccount' parameterType='Account' useGeneratedKeys='true' keyProperty='id'>
+   INSERT INTO ACCOUNT(NAME,BALANCE)
+    VALUES(#{name},#{balance})
+  </insert>
+
+  <update id='updateAccount' parameterType='Account'>
+    UPDATE ACCOUNT 
+    SET
+     BALANCE= #{balance}
+  </update>
+
+</mapper>
